@@ -13,23 +13,37 @@ Archivos
 - mbed-os.lib, link a repositorio de arm
 - compile_commands.json, java script objet notation
 */
-
+/*
+entrando a los archivos de bajo nivel durante la ejecucion encontramos
+ los archivos gpio_api.c y pinmap.c que ocntienen las ubicicaciones de
+ registros y sus definiciones
+ en punmap, incluye pinnames el cual indica que 
+    D2          = PF_15,
+    LED1        = PB_0,  // LD1 = GREEN
+*/
+/*
+static functions that are restricted to the same file in which they are defined
+inline reemplaza lo que declara a donde se llama
+*/
 int main()
 {
-    DigitalIn gasDetector(D2);
+    DigitalIn gasDetector(D2); // digitalin.h -> mbed_gpio.c -> gpio_api.c -> pinmap.c -> cmsis_armclang.h -> stm32f4xx_ll_gpio.h
+// la clase es digital in y el objeto gasdetector, pin d2
 
-    DigitalOut alarmLed(LED1);
+    DigitalOut alarmLed(LED1); // digitalout.h -> mbed_gpio.c -> gpio_api.c -> pinmap.c -> cmsis_armclang.h -> stm32f4xx_ll_gpio.h
 
-    gasDetector.mode(PullDown);
+    gasDetector.mode(PullDown); // deifne el modo del objeto gas detector a pulldown
 
-    alarmLed = OFF;
+    alarmLed = OFF; // apaga led, pone el value off del pin del led, clase digitalout obeto alarmled
 
     while (true) {
         if ( gasDetector == ON ) {
+            printf("%s\n", "se detecta gas, alarma sonando");
             alarmLed = ON;
         }
         
         if ( gasDetector == OFF ) {
+            printf("%s\n", "no se detecta gas, alarma apagada");
             alarmLed = OFF;
         }
     }
