@@ -29,15 +29,20 @@ int main()
 {
     DigitalIn gasDetector(D2); // digitalin.h -> mbed_gpio.c -> gpio_api.c -> pinmap.c -> cmsis_armclang.h -> stm32f4xx_ll_gpio.h
 // la clase es digital in y el objeto gasdetector, pin d2
-
+// se llama al constructor
+// digitalin y digitalout los hizo mbed
+// 
+ 
     DigitalOut alarmLed(LED1); // digitalout.h -> mbed_gpio.c -> gpio_api.c -> pinmap.c -> cmsis_armclang.h -> stm32f4xx_ll_gpio.h
 
     gasDetector.mode(PullDown); // deifne el modo del objeto gas detector a pulldown
+ // se llama al metodo mode de digitalout
 
     alarmLed = OFF; // apaga led, pone el value off del pin del led, clase digitalout obeto alarmled
-
+    // esto es una sobrecarga del = definido en digitalout
+ 
     while (true) {
-        if ( gasDetector == ON ) {
+        if ( gasDetector == ON ) { // esto es una sobrecarga del ==
             printf("%s\n", "se detecta gas, alarma sonando");
             alarmLed = ON;
         }
